@@ -1,36 +1,22 @@
-const slides = Array.from(document.querySelectorAll('.slider__item'));
-const amount = slides.length;
-let index = 0;
-const prevSlideBtn = document.querySelector('.slider__arrow_prev');
-const nextSlideBtn = document.querySelector('.slider__arrow_next');
+function menuAnimate(node) {
+    let menuLinks = node.getElementsByClassName('menu__link');
+    let subMenuList = node.getElementsByClassName('menu_sub');
+    [...menuLinks].map(elem => elem.onclick = clickHandler);
 
-const addClassActive = (elem) => elem.classList.add('slider__item_active');
-const removeclassActive = (elem) => elem.classList.remove('slider__item_active');
-
-nextSlideBtn.onclick = function () {
-
-    if (index < amount - 1) {
-        removeclassActive(slides[index]);
-        addClassActive(slides[index + 1]);
-    } else {
-        removeclassActive(slides[index]);
-        addClassActive(slides[0]);
-        index = -1;
+    function clickHandler(event) {
+        let menuSub = event.target.parentNode.getElementsByClassName('menu_sub');
+        menuSub.length && clickMenu(menuSub[0]);
+        return false;
+}
+    function clickMenu(menuItem) {
+        if (menuItem.classList.contains('menu_active')) {
+            menuItem.classList.remove('menu_active');
+        } else {
+            [...subMenuList].map(elem => elem.classList.remove('menu_active'));
+            menuItem.classList.add('menu_active');
+        }
     }
-
-    index++;
 }
 
-prevSlideBtn.onclick = function () {
-
-    if (index > 0) {
-        removeclassActive(slides[index]);
-        addClassActive(slides[index - 1]);
-    } else {
-        removeclassActive(slides[0]);
-        addClassActive(slides[amount - 1]);
-        index = amount;
-    }
-
-    index--;
-}
+let nodeList = document.getElementsByClassName('menu_main');
+[...nodeList].map(node => menuAnimate(node));
